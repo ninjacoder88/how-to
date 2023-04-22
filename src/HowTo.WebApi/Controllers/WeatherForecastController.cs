@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 
 namespace HowTo.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles="admin")]
+    [RequiredScope("WebAppScope,ReadOnlyScope")]
     public class WeatherForecastController : ControllerBase
     {
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
