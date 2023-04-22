@@ -1,20 +1,12 @@
 # how-to
 A wide ranging project showing how to setup different technologies
 
-# to-do
+# Tips, Tracks, and Sundries
+
 ### Docker
-[ ] create docker compose
-
-### WebApi
-[ ]
-
-### Identity
-[ ] 
-
-### WebApp
-[ ] split modal into information modal and error modal
-[ ] error modal should have red background
-[ ] modals js lib should not need to have a div created (on the layout page) to be able to be used
-
-### Blazor
-[ ] 
+- To build a container: `docker build -t some-tag .`
+- To run a container: `docker run -d -p 8090:80 some-tag`
+- To kill a container: `docker kill abc123` where abc123 is the first 4-6 character of the id returned on run
+- Building, running, and killing Docker containers via Powershell is recommend
+- To attach to a container, I recommend using VS Code and the Docker extension
+- You can inject environment variables into docker in the following way ...
