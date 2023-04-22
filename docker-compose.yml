@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  webapp:
+    build:
+      context: ./src/HowTo.WebApp
+    ports: 
+      - 8090:80
+  webapi:
+    build: 
+      context: ./src/HowTo.WebApi
+    ports:
+      - 8091:80
+  identityapi:
+    build:
+      context: ./src/HowTo.IdentityApi
+    ports:
+      - 8092:80
