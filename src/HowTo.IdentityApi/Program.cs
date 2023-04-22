@@ -35,7 +35,7 @@ if(builder.Environment.IsStaging() || builder.Environment.IsDevelopment())
 }    
 
 var app = builder.Build();
-if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseDeveloperExceptionPage();
     app.UseCors("DoNotDoThisInProduction");

@@ -22,7 +22,7 @@
         }
 
         private readonly List<User> _userDatabase = new List<User>() {
-            new User { Id = 1, Username = "testuser", FirstName = "Test", LastName = "User", EmailAddress = "testuser@domain.com" }
+            new User { Id = 1, Username = "testuser", FirstName = "Test", LastName = "User", EmailAddress = "testuser@domain.com", Password = "pword1234", GroupId = "admin" }
         };
     }
 
