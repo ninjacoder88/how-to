@@ -10,3 +10,6 @@ A wide ranging project showing how to setup different technologies
 - Building, running, and killing Docker containers via Powershell is recommend
 - To attach to a container, I recommend using VS Code and the Docker extension
 - You can inject environment variables into docker in the following way ...
+
+### Resources
+- [Online Guid / UUID Generator](https://guidgenerator.com/online-guid-generator.aspx)
