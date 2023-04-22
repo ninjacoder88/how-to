@@ -1,0 +1,29 @@
+﻿@using HowTo.WebApp.Utility
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewBag.Title - How To</title>
+    <link rel="icon" type="image/png" href="~/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="~/css/lib/bootstrap-5.1.3.min.css"/>
+    <link rel="stylesheet" type="text/css" href="~/css/how-to.css"/>
+</head>
+<body>
+    <!--insert nav bar-->
+
+    <div class="container-fluid" id="container">
+        @RenderBody()
+    </div>
+
+    <!--insert footer-->
+    
+    <div id="modals"></div><!--this is so the how to modals can render...although, maybe we can do this better-->
+
+    <input type="hidden" id="app-version" value="@AppVersion.QueryString"/>
+
+    <script type="text/javascript" src="~/js/lib/require-2.3.6.min.js"></script>
+    <script type="text/javascript" src="~/js/requireConfig.js?@AppVersion.QueryString"></script>
+    @RenderSection("Scripts", false)
+</body>
+</html>
