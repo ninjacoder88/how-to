@@ -29,11 +29,11 @@
                         data: JSON.stringify(data),
                         dataType: "json",
                         contentType: "application/json"
-                    }).then(function (data) {
-                        if (data.success === true) {
-                            return data;
+                    }).then(function (response) {
+                        if (response.success === true) {
+                            return response.data;
                         } else {
-                            throw data.errorMessage;
+                            throw response.errorMessage;
                         }
                     }).catch(function (jqXHR, textStatus, errorThrown) {
                         console.error({ jqXHR: jqXHR, textStatus: textStatus, errorThrown: errorThrown });
@@ -41,15 +41,19 @@
                     });
             },
 
-            getAsync: function (path) {
+            getAsync: function (path, token) {
                 return $.ajax({
                         url: path,
                         method: "GET",
-                    }).done(function (data) {
-                        if (data.success === true) {
-                            return data;
+                        beforeSend: function(xhr){
+                            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+                            xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+                        }
+                    }).done(function (response) {
+                        if (response.success === true) {
+                            return response.data;
                         } else {
-                            throw data.errorMessage;
+                            throw response.errorMessage;
                         }
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         console.error({ jqXHR: jqXHR, textStatus: textStatus, errorThrown: errorThrown });
