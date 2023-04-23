@@ -1,5 +1,6 @@
 using HowTo.WebApi.Configuration;
 using HowTo.WebApi.DataAccess;
+using HowTo.WebApi.Logging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -48,7 +49,8 @@ builder.Services.AddApiVersioning(options =>
     );
 });
 
-builder.Services.AddScoped<IRepository, Repository>(t => new Repository(builder.Configuration.GetConnectionString("HowTo")));
+builder.Services.AddScoped<IRepository, Repository>(t => new Repository(builder.Configuration.GetConnectionString("HowTo")))
+    .AddScoped<ILogRepository, LogRepository>(t => new LogRepository(builder.Configuration.GetConnectionString("HowTo"), "How To Web API"));
 
 
 var app = builder.Build();
