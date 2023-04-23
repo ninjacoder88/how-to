@@ -22,13 +22,40 @@
                 });
             },
 
+            postRawAsync: function (path, data) {
+                return $.ajax({
+                    method: "POST",
+                    url: path,
+                    data: data,
+                    dataType: "json",
+                    contentType: "application/json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+                        xhr.setRequestHeader("Authorization", `Bearer ${window.accessToken}`);
+                    }
+                }).then(function (response) {
+                    if (response.success === true) {
+                        return response.data;
+                    } else {
+                        throw response.errorMessage;
+                    }
+                }).catch(function (jqXHR, textStatus, errorThrown) {
+                    console.error({ jqXHR: jqXHR, textStatus: textStatus, errorThrown: errorThrown });
+                    throw jqXHR.responseText ?? jqXHR;
+                });
+            },
+
             postAsync: function (path, data) {
                 return $.ajax({
                         method: "POST",
                         url: path,
                         data: JSON.stringify(data),
                         dataType: "json",
-                        contentType: "application/json"
+                        contentType: "application/json",
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+                            xhr.setRequestHeader("Authorization", `Bearer ${window.accessToken}`);
+                        }
                     }).then(function (response) {
                         if (response.success === true) {
                             return response.data;
@@ -41,21 +68,21 @@
                     });
             },
 
-            getAsync: function (path, token) {
+            getAsync: function (path) {
                 return $.ajax({
                         url: path,
                         method: "GET",
                         beforeSend: function(xhr){
                             xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-                            xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+                            xhr.setRequestHeader("Authorization", `Bearer ${window.accessToken}`);
                         }
-                    }).done(function (response) {
+                    }).then(function (response) {
                         if (response.success === true) {
                             return response.data;
                         } else {
                             throw response.errorMessage;
                         }
-                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                    }).catch(function (jqXHR, textStatus, errorThrown) {
                         console.error({ jqXHR: jqXHR, textStatus: textStatus, errorThrown: errorThrown });
                         throw jqXHR.responseText ?? jqXHR;
                     });
