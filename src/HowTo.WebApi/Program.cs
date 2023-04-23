@@ -49,6 +49,11 @@ builder.Services.AddApiVersioning(options =>
     );
 });
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = "redis:6379";
+});
+
 builder.Services.AddScoped<IRepository, Repository>(t => new Repository(builder.Configuration.GetConnectionString("HowTo")))
     .AddScoped<ILogRepository, LogRepository>(t => new LogRepository(builder.Configuration.GetConnectionString("HowTo"), "How To Web API"));
 

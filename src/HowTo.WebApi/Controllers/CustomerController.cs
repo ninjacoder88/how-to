@@ -5,7 +5,9 @@ using HowTo.WebApi.Logging;
 using HowTo.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Identity.Web.Resource;
+using Newtonsoft.Json;
 using System.Net;
 
 namespace HowTo.WebApi.Controllers
@@ -16,10 +18,11 @@ namespace HowTo.WebApi.Controllers
     [RequiredScope("WebAppScope,ReadOnlyScope")]
     public class CustomerController : ControllerBase
     {
-        public CustomerController(IRepository repository, ILogRepository logRepository)
+        public CustomerController(IRepository repository, ILogRepository logRepository, IDistributedCache cache)
         {
             _repository = repository;
             _logRepository = logRepository;
+            _cache = cache;
         }
 
         [HttpGet("{id}")]
@@ -31,11 +34,23 @@ namespace HowTo.WebApi.Controllers
             {
                 await _logRepository.LogInformationAsync(this, t => t.AddTransactionId(guid).AddData(id).AddUsername(username));
 
+                var cacheCustomer = _cache.GetString(id);
+                if(!string.IsNullOrEmpty(cacheCustomer))
+                    return new JsonResult(new ResponseModel<CustomerModel>(true) { Data = JsonConvert.DeserializeObject<CustomerModel>(cacheCustomer) });
+
                 var customer = await _repository.LoadCustomerAsync(id);
                 if (customer == null)
                     return new JsonResult(new ResponseModel<CustomerModel>(false) { ErrorMessage = $"{guid} - Customer not found" });
 
-                return new JsonResult(new ResponseModel<CustomerModel>(true) { Data = customer.ToModel() });
+                var customerModel = customer.ToModel();
+
+                await _cache.SetStringAsync(id, JsonConvert.SerializeObject(customerModel), new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTimeOffset.Now.AddDays(14),
+                    SlidingExpiration = TimeSpan.FromSeconds(3600)
+                });
+
+                return new JsonResult(new ResponseModel<CustomerModel>(true) { Data = customerModel });
             }
             catch (Exception ex)
             {
@@ -55,6 +70,9 @@ namespace HowTo.WebApi.Controllers
 
                 if (string.IsNullOrEmpty(customer.FirstName))
                     return new JsonResult(new ResponseModel<CustomerModel>(false) { ErrorMessage = $"{guid} - First Name is required" });
+
+                if (string.IsNullOrEmpty(customer.LastName))
+                    return new JsonResult(new ResponseModel<CustomerModel>(false) { ErrorMessage = $"{guid} - Last Name is required" });
 
                 var entity = new CustomerEntity
                 {
@@ -97,5 +115,6 @@ namespace HowTo.WebApi.Controllers
 
         private readonly IRepository _repository;
         private readonly ILogRepository _logRepository;
+        private readonly IDistributedCache _cache;
     }
 }

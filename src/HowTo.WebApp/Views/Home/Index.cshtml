@@ -11,29 +11,115 @@
 
 <h1>Welcome</h1>
 
-<div class="mb-3">
-    <label>Username</label>
-    <input type="text" class="form-control" data-bind="value: username" />
-</div>
-<div class="mb-3">
-    <label>Password</label>
-    <input type="password" class="form-control" data-bind="value: password" />
-</div>
-<div class="mb-3">
-    <label>Client Id</label>
-    <input type="text" class="form-control" data-bind="value: clientId" />
-</div>
-<div class="mb-3">
-    <label>Client Secret</label>
-    <input type="text" class="form-control" data-bind="value: clientSecret" />
+<h3>Authenticate</h3>
+<div class="row mb-3">
+    <div class="col">
+        <label>Username</label>
+        <input type="text" class="form-control" data-bind="value: username" />
+    </div>
+    <div class="col">
+        <label>Password</label>
+        <input type="password" class="form-control" data-bind="value: password" />
+    </div>
+    <div class="col">
+        <label>Client Id</label>
+        <input type="text" class="form-control" data-bind="value: clientId" />
+    </div>
+    <div class="col">
+        <label>Client Secret</label>
+        <input type="text" class="form-control" data-bind="value: clientSecret" />
+    </div>
 </div>
 
+<button type="button" class="btn btn-primary" data-bind="click: getToken, disable: loadingToken">Get Token</button>
+<div data-bind="visible: tokenLoaded">
+    <div class="alert alert-success">
+        Authorization Successful!
+    </div>
+</div>
 
-<button type="button" class="btn btn-primary" data-bind="click: getToken">Get Token</button>
+<hr/>
 
-<div class="mb-3">
-    <label>Token Response</label>
-    <textarea class="form-control" data-bind="value: tokenResponseText"></textarea>
+<div data-bind="with: createCustomer">
+    <div class="mb-3">
+        <label>First Name</label>
+        <input type="text" class="form-control" data-bind="value: firstName"/>
+    </div>
+    <div class="mb-3">
+        <label>Last Name</label>
+        <input type="text" class="form-control" data-bind="value: lastName"/>
+    </div>
+    <div class="mb-3">
+        <label>Email Address</label>
+        <input type="text" class="form-control" data-bind="value: emailAddress"/>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Billing Address</h3>
+            <div class="mb-3">
+                <label>Street Address</label>
+                <input type="text" class="form-control" data-bind="value: billingStreetAddress"/>
+            </div>
+            <div class="mb-3">
+                <label>City</label>
+                <input type="text" class="form-control" data-bind="value: billingCity"/>
+            </div>
+            <div class="mb-3">
+                <label>State</label>
+                <select class="form-control" data-bind="value: billingState">
+                    <option value="MA">Massachusetts</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="IA">Iowa</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Postal Code</label>
+                <input type="text" class="form-control" data-bind="value: billingPostalCode"/>
+            </div>
+            <div class="mb-3">
+                <label>Country</label>
+                <select class="form-control" data-bind="value: billingCountry">
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="MX">Mexico</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3>Shipping Address</h3>
+            <div class="mb-3">
+                <label>Street Address</label>
+                <input type="text" class="form-control" data-bind="value: shippingStreetAddress"/>
+            </div>
+            <div class="mb-3">
+                <label>City</label>
+                <input type="text" class="form-control" data-bind="value: shippingCity"/>
+            </div>
+            <div class="mb-3">
+                <label>State</label>
+                <select class="form-control" data-bind="value: shippingState">
+                    <option value="MA">Massachusetts</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="IA">Iowa</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Postal Code</label>
+                <input type="text" class="form-control" data-bind="value: shippingPostalCode"/>
+            </div>
+            <div class="mb-3">
+                <label>Country</label>
+                <select class="form-control" data-bind="value: shippingCountry">
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="MX">Mexico</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-bind="click: createCustomer">Create</button>
 </div>
 
 <hr/>
@@ -45,10 +131,6 @@
 
 <button type="button" class="btn btn-primary" data-bind="click: getCustomer">Get Customer</button>
 
-<div class="mb-3">
-    <label>Customer Response</label>
-    <textarea class="form-control" data-bind="value: customerResponseText"></textarea>
-</div>
 <div data-bind="with: customer">
     <div class="mb-3">
         <label>Customer Id</label>
@@ -67,3 +149,6 @@
         <input type="text" class="form-control" data-bind="value: emailAddress" disabled/>
     </div>
 </div>
+
+<hr />
+
