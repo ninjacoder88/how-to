@@ -4,5 +4,6 @@
     {
         public const string BearerSecurityScheme = "Bearer";
         public const string BearerAuthentication = "Bearer Authentication";
+        public const string AllowEverythingCorsPolicy = "DoNotDoThisInProduction";
     }
 }
