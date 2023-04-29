@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\css\lib\" />
-    <Folder Include="wwwroot\js\lib\" />
   </ItemGroup>
 
   <ItemGroup>
