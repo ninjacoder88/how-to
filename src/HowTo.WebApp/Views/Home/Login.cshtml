@@ -22,7 +22,7 @@
                     <input type="password" class="form-control" id="passwordInput" data-bind="value: password" />
                 </div>
                 <button type="button" class="btn btn-primary" id="loginButton" data-bind="click: login, disable: loggingIn">Login</button>
-                <div data-bind="visible: loginFailed">
+                <div style="display: none" data-bind="visible: loginFailed">
                     <div class="alert alert-danger">
                         <span>Login failed!</span>
                         <br/>

@@ -26,7 +26,7 @@
                     <input type="text" class="form-control" id="emailInput" data-bind="value: emailAddress" />
                 </div>
                 <button type="button" class="btn btn-primary" id="registerButton" data-bind="click: register, disable: registering">Register</button>
-                <div data-bind="visible: registrationFailed">
+                <div style="display: none" data-bind="visible: registrationFailed">
                     <div class="alert alert-danger">
                         <span>Registration failed!</span>
                         <br/>
