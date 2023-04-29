@@ -1,6 +1,16 @@
+using Microsoft.IdentityModel.Tokens;
+
 var builder = WebApplication.CreateBuilder(args);
-//builder.Services.AddAuthentication();
-//builder.Services.AddAuthorization();
+var internalIdentity = builder.Configuration.GetValue<string>("ServiceConnections:IdentityApiInternal");
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.Authority = internalIdentity;//this is different from the authority below because this is being called within the network
+        options.TokenValidationParameters = new TokenValidationParameters { ValidateAudience = false };
+        options.RequireHttpsMetadata = false;
+    });
+
 builder.Services.AddHealthChecks();
 builder.Services.AddControllersWithViews();
 
@@ -13,8 +23,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles()
     .UseRouting()
-    .UseHealthChecks("/health")
-    .UseEndpoints(endpoints =>
+    .UseHealthChecks("/health");
+
+app.UseAuthentication()
+    .UseAuthorization();
+
+app.UseEndpoints(endpoints =>
     {
         endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
     });
