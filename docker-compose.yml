@@ -4,21 +4,24 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     build:
-      context: ./src/HowTo.WebApp
+      context: ./src
+      dockerfile: WebApp.Dockerfile
     ports: 
       - 8090:80
   webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     build: 
-      context: ./src/HowTo.WebApi
+      context: ./src
+      dockerfile: WebApi.Dockerfile
     ports:
       - 8091:80
   identityapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     build:
-      context: ./src/HowTo.IdentityApi
+      context: ./src
+      dockerfile: IdentityApi.Dockerfile
     ports:
       - 8092:80
   mongo:
