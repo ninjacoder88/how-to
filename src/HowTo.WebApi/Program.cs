@@ -1,5 +1,5 @@
+using HowTo.DataAccess;
 using HowTo.WebApi.Configuration;
-using HowTo.WebApi.DataAccess;
 using HowTo.WebApi.Logging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +54,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = "redis:6379";
 });
 
-builder.Services.AddScoped<IRepository, Repository>(t => new Repository(builder.Configuration.GetConnectionString("HowTo")))
+builder.Services.AddScoped<IRepository, Repository>()
     .AddScoped<ILogRepository, LogRepository>(t => new LogRepository(builder.Configuration.GetConnectionString("HowTo"), "How To Web API"));
 
 

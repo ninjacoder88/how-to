@@ -15,4 +15,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HowTo.DataAccess\HowTo.DataAccess.csproj" />
+    <ProjectReference Include="..\HowTo.Utility\HowTo.Utility.csproj" />
+  </ItemGroup>
+
 </Project>
