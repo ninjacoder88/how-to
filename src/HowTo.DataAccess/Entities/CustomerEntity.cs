@@ -1,10 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace HowTo.WebApi.DataAccess.Entities
+namespace HowTo.DataAccess.Entities
 {
     [BsonIgnoreExtraElements]
-    public sealed class CustomerEntity
+    internal sealed class CustomerEntity
     {
         public ObjectId _id { get; set; }
 
@@ -17,7 +17,7 @@ namespace HowTo.WebApi.DataAccess.Entities
         public List<AddressEntity> Addresses { get; set; }
     }
 
-    public sealed class AddressEntity
+    internal sealed class AddressEntity
     {
         public string StreetAddress { get; set; }
 
