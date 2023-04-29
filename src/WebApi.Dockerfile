@@ -10,11 +10,11 @@ WORKDIR /code
 COPY ./HowTo.WebApi ./HowTo.WebApi
 COPY ./HowTo.DataAccess ./HowTo.DataAccess
 COPY ./HowTo.Utility ./HowTo.Utility
-RUN dotnet restore "HowTo.WebApi/HowTo.WebApi.csproj"
-RUN dotnet build "HowTo.WebApi/HowTo.WebApi.csproj" -c Release -o /app/build
+RUN dotnet restore "./HowTo.WebApi/HowTo.WebApi.csproj"
+RUN dotnet build "./HowTo.WebApi/HowTo.WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "HowTo.WebApi/HowTo.WebApi.csproj" -c Release -o /app/publish
+RUN dotnet publish "./HowTo.WebApi/HowTo.WebApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
