@@ -1,7 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
     ViewData["Title"] = "Home";
 }
 
@@ -11,32 +8,10 @@
 
 <h1>Welcome</h1>
 
-<h3>Authenticate</h3>
-<div class="row mb-3">
-    <div class="col">
-        <label>Username</label>
-        <input type="text" class="form-control" data-bind="value: username" />
-    </div>
-    <div class="col">
-        <label>Password</label>
-        <input type="password" class="form-control" data-bind="value: password" />
-    </div>
-    <div class="col">
-        <label>Client Id</label>
-        <input type="text" class="form-control" data-bind="value: clientId" />
-    </div>
-    <div class="col">
-        <label>Client Secret</label>
-        <input type="text" class="form-control" data-bind="value: clientSecret" />
-    </div>
-</div>
-
-<button type="button" class="btn btn-primary" data-bind="click: getToken, disable: loadingToken">Get Token</button>
-<div data-bind="visible: tokenLoaded">
-    <div class="alert alert-success">
-        Authorization Successful!
-    </div>
-</div>
+<a asp-controller="Home" asp-action="Login">Login</a>
+<br/>
+<a asp-controller="Home" asp-action="Register">Register</a>
+<br/>
 
 <hr/>
 
@@ -151,4 +126,6 @@
 </div>
 
 <hr />
+
+<calendar-component params=""></calendar-component>
 

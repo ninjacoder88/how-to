@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/app/LoginViewModel.js"></script>
+}
+
+<div class="row">
+    <div class="col-md-3 offset-4">
+        <div class="card bg-dark text-white">
+            <div class="card-header">
+                Login
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label>Username</label>
+                    <input type="text" class="form-control" id="usernameInput" data-bind="value: username"/>
+                </div>
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input type="password" class="form-control" id="passwordInput" data-bind="value: password" />
+                </div>
+                <button type="button" class="btn btn-primary" id="loginButton" data-bind="click: login, disable: loggingIn">Login</button>
+                <div data-bind="visible: loginFailed">
+                    <div class="alert alert-danger">
+                        <span>Login failed!</span>
+                        <br/>
+                        <span data-bind="text: errorMessage"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

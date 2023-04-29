@@ -1,13 +1,6 @@
-﻿require(["knockout", "httpService", "pubsub", "bootstrap", "jquery"],
-    function (ko, http, ps) {
+﻿require(["knockout", "http", "jquery", "bootstrap"],
+    function (ko, http, $) {
         "use strict";
-
-        function Token(obj) {
-            const self = this;
-            self.accessToken = obj.access_token;
-            self.expiresIn = obj.expires_in;
-            self.scope = obj.scope;
-        }
 
         function Customer(obj) {
             const self = this;
@@ -62,36 +55,10 @@
 
         function ViewModel() {
             const self = this;
-            self.username = ko.observable("testaccount");
-            self.password = ko.observable("password1234");
-            self.clientId = ko.observable("test");
-            self.clientSecret = ko.observable("ee09b556-a7ab-40cf-9a14-cd9e629a6bb7");
-            self.tokenResponse = ko.observable();
-
             self.customerId = ko.observable("644543adae453d159183a104");
             self.customer = ko.observable();
 
             self.createCustomer = ko.observable(new CreateCustomer());
-
-            self.loadingToken = ko.observable(false);
-            self.tokenLoaded = ko.observable(false);
-
-            self.getToken = function () {
-                self.loadingToken(true);
-                const queryString = `username=${self.username()}&password=${self.password()}&clientId=${self.clientId()}&clientSecret=${self.clientSecret()}`;
-                http.getAsync(`http://localhost:8091/api/authenticate?${queryString}`)
-                    .then(response => {
-                        const token = new Token(response);
-                        window.accessToken = token.accessToken;
-                        //self.tokenResponse(new Token(response));
-                        //self.tokenResponseText(response);
-                        self.loadingToken(false);
-                        self.tokenLoaded(true);
-                    }).catch(error => {
-                        console.error(error);
-                        self.loadingToken(false);
-                    });
-            };
 
             self.getCustomer = function () {
                 http.getAsync(`http://localhost:8091/api/customer/${self.customerId()}`)
@@ -104,5 +71,10 @@
             };
         }
 
-        ko.applyBindings(new ViewModel(), document.getElementById("container"));
+        ko.components.register("calendar-component", {
+            viewModel: { require: "components/calendar/calendar-component-view-model" },
+            template: { require: "text!components/calendar/calendar-component.html" },
+        });
+
+        ko.applyBindings(new ViewModel(), document.getElementById("app-container"));
     });
