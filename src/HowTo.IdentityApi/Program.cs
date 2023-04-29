@@ -1,6 +1,6 @@
+using HowTo.DataAccess;
 using HowTo.IdentityApi;
 using HowTo.IdentityApi.Configuration;
-using HowTo.IdentityApi.DataAccess;
 using HowTo.IdentityApi.Extensions;
 using IdentityServer4.Services;
 using IdentityServer4.Validation;
@@ -16,7 +16,7 @@ var identityServerBuilder =
     .AddProfileService<HowToProfileService>();
 
 builder.Services.AddScoped<IProfileService, HowToProfileService>()
-    .AddScoped<IUserRepository, UserRepository>()
+    .AddScoped<IRepository, Repository>()
     .AddScoped<IResourceOwnerPasswordValidator, HowToResourceOwnerPasswordValidator>();
 
 if (builder.Environment.IsProduction())

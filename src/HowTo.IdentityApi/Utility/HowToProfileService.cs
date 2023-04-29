@@ -1,4 +1,4 @@
-﻿using HowTo.IdentityApi.DataAccess;
+﻿using HowTo.DataAccess;
 using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
@@ -8,9 +8,9 @@ namespace HowTo.IdentityApi
 {
     internal sealed class HowToProfileService : IProfileService
     {
-        public HowToProfileService(IUserRepository userRepository)
+        public HowToProfileService(IRepository repository)
         {
-            _userRepository = userRepository;
+            _repository = repository;
         }
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
@@ -23,20 +23,20 @@ namespace HowTo.IdentityApi
             if (string.IsNullOrEmpty(idClaim.Value))
                 return;
 
-            if (!int.TryParse(idClaim.Value, out var id))
-                return;
+            //if (!int.TryParse(idClaim.Value, out var id))
+            //    return;
 
-            var user = await _userRepository.LoadUserAsync(id);
+            var model = await _repository.LoadUserByUserIdAsync(idClaim.Value);
 
-            if (user == null)
+            if (model == null)
                 return;
 
             // add claims for this user
             context.IssuedClaims = new List<Claim>
             {
-                new Claim("customclaim", user.GroupId),
-                new Claim(JwtClaimTypes.Role, "admin"),
-                new Claim(JwtClaimTypes.Email, user.EmailAddress)
+                new Claim("customclaim", "something"),
+                new Claim(JwtClaimTypes.Role, "user"),
+                //new Claim(JwtClaimTypes.Email, user.EmailAddress)
             };
         }
 
@@ -47,6 +47,6 @@ namespace HowTo.IdentityApi
             context.IsActive = true;
         }
 
-        private readonly IUserRepository _userRepository;
+        private readonly IRepository _repository;
     }
 }

@@ -1,4 +1,5 @@
-﻿using HowTo.IdentityApi.DataAccess;
+﻿using HowTo.DataAccess;
+using HowTo.Utility;
 using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
@@ -8,23 +9,24 @@ namespace HowTo.IdentityApi
 {
     internal sealed class HowToResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
     {
-        public HowToResourceOwnerPasswordValidator(IUserRepository userRepository)
+        public HowToResourceOwnerPasswordValidator(IRepository repository)
         {
-            _userRepository = userRepository;
+            _repository = repository;
         }
 
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
-            var user = await _userRepository.LoadUserAsync(context.UserName);
+            var model = await _repository.LoadUserByUsernameAsync(context.UserName);
 
-            if(user == null)
+            if(model == null)
             {
                 context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Username or password is invalid");
                 return;
             }
 
+            var hashedPassword = new Encryptor().HashEncrypt(context.Password, model.Salt);
             // password on the user object is ideally hashed so there may be a need to hash the incoming password
-            if(user.Password != context.Password)
+            if (model.HashedPassword != hashedPassword)
             {
                 context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Username or password is invalid");
                 return;
@@ -35,8 +37,8 @@ namespace HowTo.IdentityApi
             // this should only be the required claims. specific claims should be set in the profile service
             var claims = new List<Claim>
             {
-                new Claim(JwtClaimTypes.Id, user.Id.ToString()),
-                new Claim(JwtClaimTypes.Subject, user.Username),
+                new Claim(JwtClaimTypes.Id, model.UserId),
+                new Claim(JwtClaimTypes.Subject, model.Username),
                 new Claim(JwtClaimTypes.AuthenticationTime, now.ToEpochTime().ToString()),
                 new Claim(JwtClaimTypes.IdentityProvider, "howto"),
             };
@@ -44,6 +46,6 @@ namespace HowTo.IdentityApi
             context.Result = new GrantValidationResult { Subject = new ClaimsPrincipal(new ClaimsIdentity(claims)) };
         }
 
-        private readonly IUserRepository _userRepository;
+        private readonly IRepository _repository;
     }
 }

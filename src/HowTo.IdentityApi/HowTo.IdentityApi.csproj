@@ -10,4 +10,9 @@
     <PackageReference Include="IdentityServer4" Version="4.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HowTo.DataAccess\HowTo.DataAccess.csproj" />
+    <ProjectReference Include="..\HowTo.Utility\HowTo.Utility.csproj" />
+  </ItemGroup>
+
 </Project>
