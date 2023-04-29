@@ -5,9 +5,9 @@ namespace HowTo.WebApi.Logging
 {
     public interface ILogRepository
     {
-        Task LogInformationAsync(object thisInstance, Action<LogEntryBuilder> logBuilder, [CallerMemberName] string methodName = null);
+        Task LogInformationAsync(object thisInstance, Action<LogEntryBuilder> logBuilder, [CallerMemberName] string? methodName = null);
 
-        Task LogErrorAsync(object thisInstance, Action<LogEntryBuilder> logBuilder, [CallerMemberName] string methodName = null);
+        Task LogErrorAsync(object thisInstance, Action<LogEntryBuilder> logBuilder, [CallerMemberName] string? methodName = null);
     }
 
     internal class LogRepository : ILogRepository
@@ -19,7 +19,7 @@ namespace HowTo.WebApi.Logging
             _throwExceptions = throwExceptions;
         }
 
-        public async Task LogInformationAsync(object thisInstance, Action<LogEntryBuilder> logBuilder, [CallerMemberName] string methodName = null)
+        public async Task LogInformationAsync(object thisInstance, Action<LogEntryBuilder> logBuilder, [CallerMemberName] string? methodName = null)
         {
             LogEntryBuilder builder = new LogEntryBuilder();
             logBuilder(builder);
@@ -29,7 +29,7 @@ namespace HowTo.WebApi.Logging
             await LogAsync(thisInstance, "Information", proxy, methodName);
         }
 
-        public async Task LogErrorAsync(object thisInstance, Action<LogEntryBuilder> logBuilder, [CallerMemberName] string methodName = null)
+        public async Task LogErrorAsync(object thisInstance, Action<LogEntryBuilder> logBuilder, [CallerMemberName] string? methodName = null)
         {
             LogEntryBuilder builder = new LogEntryBuilder();
             logBuilder(builder);
@@ -39,7 +39,7 @@ namespace HowTo.WebApi.Logging
             await LogAsync(thisInstance, "Error", proxy, methodName);
         }
 
-        private async Task LogAsync(object thisInstance, string logLevel, LogEntryProxy proxy, string methodName)
+        private async Task LogAsync(object thisInstance, string logLevel, LogEntryProxy proxy, string? methodName)
         {
             try
             {
