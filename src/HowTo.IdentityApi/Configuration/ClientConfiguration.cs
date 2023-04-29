@@ -6,9 +6,8 @@ namespace HowTo.IdentityApi.Configuration
     {
         public static IEnumerable<Client> Clients => new List<Client>
         {
-            ClientCreator.CreateForClientCredentials("webapp", "b20d7f1c-3d10-4c72-b994-8bd36a847e28", Scope.WebApp),
-            ClientCreator.CreateForPassword("demo", "11f0c7b1-d73d-4c6f-8409-1b3398a2e541", Scope.ReadOnly),
-            ClientCreator.CreateForPassword("test", "ee09b556-a7ab-40cf-9a14-cd9e629a6bb7", Scope.WebApp)
+            ClientCreator.CreateForClientCredentials("swagger", "b20d7f1c-3d10-4c72-b994-8bd36a847e28", Scope.WebApp),
+            ClientCreator.CreateForPassword("webapplogin", "7c6e005b-aaf7-425a-a8c4-f488ff5dd95b", Scope.WebApp)
         };
     }
 
