@@ -1,0 +1,25 @@
+﻿<div id="calendar" data-bind="visible: calendarVisible" style="display: none">
+    <table class="table table-bordered" style="table-layout:fixed">
+        <thead>
+            <tr>
+                <th class="table-secondary text-start" data-bind="click: previousMonth">Previous</th>
+                <th colspan="5" class="text-center"><span data-bind="text: monthYear"></span></th>
+                <th class="table-secondary text-end" data-bind="click: nextMonth">Next</th>
+            </tr>
+            <tr>
+                <th class="text-center">Sunday</th>
+                <th class="text-center">Monday</th>
+                <th class="text-center">Tuesday</th>
+                <th class="text-center">Wednesday</th>
+                <th class="text-center">Thursday</th>
+                <th class="text-center">Friday</th>
+                <th class="text-center">Saturday</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: weeks">
+            <tr data-bind="foreach: days">
+                <td style="height: 75px" data-bind="singleClick: showDay, event: { dblclick: addEvent }"><span class="" data-bind="text: dayOfMonth"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div><!--/calendar-->
