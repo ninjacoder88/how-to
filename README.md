@@ -1,5 +1,7 @@
 # how-to
-A wide ranging project showing how to setup different technologies
+This repository's purpose is to document common patterns and practices I have developed over the years to avoid having to always go to stackoverflow to find the answer again.
+
+# Projects
 
 # Tips, Tracks, and Sundries
 
@@ -13,3 +15,6 @@ A wide ranging project showing how to setup different technologies
 
 ### Resources
 - [Online Guid / UUID Generator](https://guidgenerator.com/online-guid-generator.aspx)
+- [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+- [ASP.NET Core Tag Helpers](https://learn.microsoft.com/en-us/aspnet/core/mvc/views/tag-helpers/built-in/?view=aspnetcore-7.0)
+- [Docker Compose File Build](https://docs.docker.com/compose/compose-file/build/)
