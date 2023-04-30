@@ -1,6 +1,8 @@
-﻿@{
+﻿@using HowTo.WebApp.Models
+@{
     ViewData["Title"] = "Home";
 }
+@model RegisterModel
 
 @section Scripts {
     <script type="text/javascript" src="~/js/app/RegisterViewModel.js"></script>
@@ -33,7 +35,17 @@
                         <span data-bind="text: errorMessage"></span>
                     </div>
                 </div>
+                <div style="display: none" data-bind="visible: registrationSuccess">
+                    <div class="alert alert-success">
+                        <span>Registration success!</span>
+                        <br/>
+                        <span>Registration was successful. You will be redirected to the login page shortly.</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<input type="hidden" id="api-url" value="@Model.ApiUrl"/>
+<input type="hidden" id="success-url" value="@Model.SuccessUrl"/>

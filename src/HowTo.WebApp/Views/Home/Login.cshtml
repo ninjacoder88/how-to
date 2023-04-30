@@ -1,6 +1,8 @@
-﻿@{
+﻿@using HowTo.WebApp.Models
+@{
     ViewData["Title"] = "Home";
 }
+@model LoginModel
 
 @section Scripts {
     <script type="text/javascript" src="~/js/app/LoginViewModel.js"></script>
@@ -33,3 +35,6 @@
         </div>
     </div>
 </div>
+
+<input type="hidden" id="api-url" value="@Model.ApiUrl"/>
+<input type="hidden" id="success-url" value="@Model.SuccessUrl"/>

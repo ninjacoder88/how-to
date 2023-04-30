@@ -11,28 +11,38 @@
 
         function ViewModel() {
             const self = this;
+            const apiUrl = document.getElementById("api-url").value;
+            const successUrl = document.getElementById("success-url").value;
             self.username = ko.observable("");
             self.password = ko.observable("");
             self.loggingIn = ko.observable(false);
             self.errorMessage = ko.observable("");
-            self.loginFailed = ko.observable(false);
+            self.loginFailed = ko.computed(function () {
+                return self.errorMessage() !== "";
+            });
 
             self.login = function () {
                 self.loggingIn(true);
-                self.loginFailed(false);
                 self.errorMessage("");
 
-                //todo: validate fields
+                if (self.username().length < 5) {
+                    self.errorMessage("Username must be at least 5 characters");
+                    self.loggingIn(false);
+                    return;
+                }
 
-                //todo: pull api location from configuration
-                http.postAsync("http://localhost:8091/api/users/login", { username: self.username(), password: self.password() })
+                if (self.password().length < 8) {
+                    self.errorMessage("Password must be at least 8 characters");
+                    self.loggingIn(false);
+                    return;
+                }
+
+                http.postAsync(`${apiUrl}api/users/login`, { username: self.username(), password: self.password() })
                     .then(response => {
                         const token = new Token(response);
                         window.accessToken = token.accessToken;
-                        //todo: pull successful login redirect from configuration
-                        window.location = "/events";
+                        window.location = successUrl;
                     }).catch(error => {
-                        self.loginFailed(true);
                         self.errorMessage(error);
                         console.error(error);
                     }).always(() => {
