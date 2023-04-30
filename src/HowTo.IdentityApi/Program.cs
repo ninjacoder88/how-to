@@ -6,6 +6,9 @@ using IdentityServer4.Services;
 using IdentityServer4.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//builder.Services.AddControllersWithViews();
+
 var identityServerBuilder = 
     builder.Services.AddIdentityServer(options =>
     {
@@ -40,6 +43,16 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     app.UseDeveloperExceptionPage();
     app.UseCors("DoNotDoThisInProduction");
 }
+
+//app.UseStaticFiles();
+//app.UseRouting();
+
 app.UseIdentityServer();
+
+//app.UseAuthorization();
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapDefaultControllerRoute();
+//});
 
 app.Run();
