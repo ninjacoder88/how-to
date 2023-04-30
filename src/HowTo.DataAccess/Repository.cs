@@ -10,10 +10,6 @@ namespace HowTo.DataAccess
 {
     public interface IRepository
     {
-        //Task CreateCustomerAsync(CustomerEntity entity);
-
-        //Task<CustomerEntity?> LoadCustomerAsync(string id);
-
         Task<string> CreateUserAsync(string username, string hashedPassword, string emailAddress, byte[] salt);
 
         Task<UserModel?> LoadUserByUsernameOrEmailAddressAsync(string username, string emailAddress);
@@ -21,6 +17,10 @@ namespace HowTo.DataAccess
         Task<LoginUserModel?> LoadUserByUsernameAsync(string username);
 
         Task<LoginUserModel?> LoadUserByUserIdAsync(string userId);
+
+        Task UpdateFailedLoginCountAsync(string userId);
+
+        Task UpdateLastLoginAsync(string userId);
     }
 
     public sealed class Repository : IRepository
@@ -30,21 +30,6 @@ namespace HowTo.DataAccess
             string connectionString = configuration.GetConnectionString("HowTo");
             _mongoClient = new MongoClient(connectionString);
         }
-
-        //public async Task CreateCustomerAsync(CustomerEntity entity) => await GetCustomerCollection().InsertOneAsync(entity);
-
-        //public async Task<CustomerEntity?> LoadCustomerAsync(string id)
-        //{
-        //    if(!ObjectId.TryParse(id, out ObjectId customerId))
-        //        return null;
-        //    var collection = GetCustomerCollection();
-        //    var cursor = await collection.FindAsync(x => x._id == customerId);
-        //    var list = await cursor.ToListAsync();
-        //    var item = list.SingleOrDefault();
-        //    if (item == null)
-        //        return null;
-        //    return item;
-        //}
 
         public async Task<string> CreateUserAsync(string username, string hashedPassword, string emailAddress, byte[] salt)
         {
@@ -87,8 +72,40 @@ namespace HowTo.DataAccess
             return entity.ToLoginModel();
         }
 
+        public async Task UpdateFailedLoginCountAsync(string userId)
+        {
+            if (!ObjectId.TryParse(userId, out ObjectId objectId))
+                return;
+
+            var user = await GetUserCollection().FindOneAsync(f => f._id == objectId);
+            if (user == null)
+                return;
+
+            UpdateDefinition<UserEntity> updateDefinition =
+                new UpdateDefinitionBuilder<UserEntity>()
+                .Set(t => t.FailedLoginCount, user.FailedLoginCount);
+
+            await GetUserCollection().FindOneAndUpdateAsync(f => f._id == objectId, updateDefinition);
+        }
+
+        public async Task UpdateLastLoginAsync(string userId)
+        {
+            if (!ObjectId.TryParse(userId, out ObjectId objectId))
+                return;
+
+            var user = await GetUserCollection().FindOneAsync(f => f._id == objectId);
+            if (user == null)
+                return;
+
+            UpdateDefinition<UserEntity> updateDefinition =
+                new UpdateDefinitionBuilder<UserEntity>()
+                .Set(t => t.FailedLoginCount, 0)
+                .Set(t => t.LastLoginTime, DateTimeOffset.Now);
+
+            await GetUserCollection().FindOneAndUpdateAsync(f => f._id == objectId, updateDefinition);
+        }
+
         private IMongoDatabase GetDatabase() => _mongoClient.GetDatabase("HowTo");
-        //private IMongoCollection<CustomerEntity> GetCustomerCollection() => GetDatabase().GetCollection<CustomerEntity>("Customers");
         private IMongoCollection<UserEntity> GetUserCollection() => GetDatabase().GetCollection<UserEntity>("Users");
 
         private readonly IMongoClient _mongoClient;

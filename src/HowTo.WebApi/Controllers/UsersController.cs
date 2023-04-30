@@ -31,7 +31,8 @@ namespace HowTo.WebApi.Controllers
             if (string.IsNullOrEmpty(model.Password))
                 return BadRequest("Password must have a value");
 
-            //todo: check password length
+            if (model.Password.Length < 8 || model.Password.Length > 100)
+                return BadRequest("Password must be at least 8 characters and no more than 100");
 
             var formattedUsername = model.Username.Trim().ToLower();
 
@@ -40,13 +41,17 @@ namespace HowTo.WebApi.Controllers
             if(user == null)
                 return NotFound("Username does not exist");
 
+            if (user.FailedLoginCount > 5)
+                return BadRequest("Account is locked out");
+
             var hashedPassword = new Encryptor().HashEncrypt(model.Password, user.Salt);
 
-            //todo: set login failed count
             if (user.HashedPassword != hashedPassword)
+            {
+                await _repository.UpdateFailedLoginCountAsync(user.UserId);
                 return Unauthorized("Invalid password");
+            }
 
-            //todo: set last login time
             var identityApi = _configuration.GetValue<string>("ServiceConnections:IdentityApiInternal");
             using (var client = new HttpClient())
             {
@@ -55,6 +60,8 @@ namespace HowTo.WebApi.Controllers
                 var responseContent = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     return new JsonResult(new ResponseModel<string>(false) { ErrorMessage = responseContent });
+
+                await _repository.UpdateLastLoginAsync(user.UserId);
                 return new JsonResult(new ResponseModel<TokenModel>(true) { Data = JsonConvert.DeserializeObject<TokenModel>(responseContent) });
             }
         }
@@ -74,7 +81,9 @@ namespace HowTo.WebApi.Controllers
             if (string.IsNullOrEmpty(model.EmailAddress))
                 return BadRequest("Email Address must have a value");
 
-            //todo: check password length min 8, max 100
+            if (model.Password.Length < 8 || model.Password.Length > 100)
+                return BadRequest("Password must be at least 8 characters and no more than 100");
+
             //todo: ensure email matches pattern
 
             var formattedUsername = model.Username.Trim().ToLower();
