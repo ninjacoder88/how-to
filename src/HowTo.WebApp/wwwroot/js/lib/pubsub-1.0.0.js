@@ -5,6 +5,9 @@
         let queues = {};
         return {
             publish: function (queueName, message) {
+                if (queues[queueName] === undefined) {
+                    queues[queueName] = [];
+                }
                 queues[queueName].forEach(q => {
                     q(message);
                 });
