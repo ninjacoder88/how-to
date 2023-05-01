@@ -1,7 +1,70 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using HowTo.WebApp.Models
 @{
+    ViewData["Title"] = "Home";
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/app/EventsViewModel.js"></script>
 }
 
 <h1>Events</h1>
+
+<div class="card">
+    <div class="card-header">
+        Add Event
+    </div>
+    <div class="card-body" data-bind="with: createEvent">
+        <form class="row g-3">
+            <div class="col-md-12">
+                <label>Title</label>
+                <input type="text" class="form-control" data-bind="value: title"/>
+            </div>
+            <div class="col-md-6">
+                <label>Start</label>
+                <input type="date" class="form-control" data-bind="value: startDate"/>
+            </div>
+            <div class="col-md-6">
+                <label>Start</label>
+                <input type="time" class="form-control" data-bind="value: startTime"/>
+            </div>
+            <div class="col-md-6">
+                <label>End</label>
+                <input type="date" class="form-control" data-bind="value: endDate"/>
+            </div>
+            <div class="col-md-6">
+                <label>End</label>
+                <input type="time" class="form-control" data-bind="value: endTime"/>
+            </div>
+            <div class="col-md-12">
+                <label>Description</label>
+                <textarea class="form-control" data-bind="value: description"></textarea>
+            </div>
+            <div class="col-md-12">
+                <button type="button" class="btn btn-primary" data-bind="click: createEvent">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start</th>
+            <th>End</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: events">
+        <tr>
+            <td><span data-bind="text: title"></span></td>
+            <td><span data-bind="text: description"></span></td>
+            <td><span data-bind="text: startDate"></span> <span data-bind="text: startTime"></span></td>
+            <td><span data-bind="text: endDate"></span> <span data-bind="text: endTime"></span></td>
+            <td><button type="button" class="btn btn-info btn-sm">Edit</button><button type="button" class="btn btn-danger btn-sm">Delete</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<input type="hidden" id="api-url" value="@Model.ApiUrl"/>

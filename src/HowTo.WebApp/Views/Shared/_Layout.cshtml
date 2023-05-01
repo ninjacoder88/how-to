@@ -10,7 +10,27 @@
     <link rel="stylesheet" type="text/css" href="~/css/how-to.css"/>
 </head>
 <body>
-    <!--insert nav bar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a asp-controller="Home" asp-action="Index" class="navbar-brand">How To</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a asp-controller="Home" asp-action="Login" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Home" asp-action="Register" class="nav-link">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Events" asp-action="Index" class="nav-link">Events</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div class="container-fluid" id="app-container">
         @RenderBody()
