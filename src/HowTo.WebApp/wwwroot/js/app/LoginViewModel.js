@@ -40,7 +40,7 @@
                 http.postAsync(`${apiUrl}api/users/login`, { username: self.username(), password: self.password() })
                     .then(response => {
                         const token = new Token(response);
-                        window.accessToken = token.accessToken;
+                        window.sessionStorage.setItem("accessToken", token.accessToken);
                         window.location = successUrl;
                     }).catch(error => {
                         self.errorMessage(error);

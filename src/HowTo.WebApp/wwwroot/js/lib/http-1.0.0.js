@@ -31,7 +31,7 @@
                     contentType: "application/json",
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-                        xhr.setRequestHeader("Authorization", `Bearer ${window.accessToken}`);
+                        xhr.setRequestHeader("Authorization", `Bearer ${window.sessionStorage.getItem("accessToken")}`);
                     }
                 }).then(function (response) {
                     if (response.success === true) {
@@ -54,7 +54,7 @@
                         contentType: "application/json",
                         beforeSend: function (xhr) {
                             xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-                            xhr.setRequestHeader("Authorization", `Bearer ${window.accessToken}`);
+                            xhr.setRequestHeader("Authorization", `Bearer ${window.sessionStorage.getItem("accessToken")}`);
                         }
                     }).then(function (response) {
                         if (response.success === true) {
@@ -74,7 +74,7 @@
                         method: "GET",
                         beforeSend: function(xhr){
                             xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-                            xhr.setRequestHeader("Authorization", `Bearer ${window.accessToken}`);
+                            xhr.setRequestHeader("Authorization", `Bearer ${window.sessionStorage.getItem("accessToken")}`);
                         }
                     }).then(function (response) {
                         if (response.success === true) {
