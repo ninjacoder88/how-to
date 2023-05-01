@@ -21,6 +21,10 @@ namespace HowTo.DataAccess
         Task UpdateFailedLoginCountAsync(string userId);
 
         Task UpdateLastLoginAsync(string userId);
+
+        Task<string> CreateEventAsync(string title, string description, DateTimeOffset start, DateTimeOffset end);
+
+        Task<List<EventModel>> LoadEventsAsync(DateTimeOffset start, DateTimeOffset end);
     }
 
     public sealed class Repository : IRepository
@@ -105,8 +109,29 @@ namespace HowTo.DataAccess
             await GetUserCollection().FindOneAndUpdateAsync(f => f._id == objectId, updateDefinition);
         }
 
+        public async Task<string> CreateEventAsync(string title, string description, DateTimeOffset start, DateTimeOffset end)
+        {
+            var entity = new EventEntity
+            {
+                Description = description,
+                EndDateTime = end,
+                StartDateTime = start,
+                Title = title
+            };
+            await GetEventCollection().InsertOneAsync(entity);
+            return entity._id.ToString();
+        }
+
+        public async Task<List<EventModel>> LoadEventsAsync(DateTimeOffset start, DateTimeOffset end)
+        {
+            var cursor = await GetEventCollection().FindAsync(f => f.StartDateTime >= start || f.EndDateTime <= end);
+            var list = await cursor.ToListAsync();
+            return list.Select(x => x.ToModel()).ToList();
+        }
+
         private IMongoDatabase GetDatabase() => _mongoClient.GetDatabase("HowTo");
         private IMongoCollection<UserEntity> GetUserCollection() => GetDatabase().GetCollection<UserEntity>("Users");
+        private IMongoCollection<EventEntity> GetEventCollection() => GetDatabase().GetCollection<EventEntity>("Events");
 
         private readonly IMongoClient _mongoClient;
     }
