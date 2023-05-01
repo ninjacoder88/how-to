@@ -11,7 +11,7 @@ namespace HowTo.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index() => View();
+        public IActionResult Index() => View(new HomeModel(_configuration.GetValue<string>("ServiceConnections:ApiUrl")));
 
         [HttpGet]
         public IActionResult Login() => View(new LoginModel(_configuration.GetValue<string>("ServiceConnections:ApiUrl"), Url.Action("Index", "Events")));
