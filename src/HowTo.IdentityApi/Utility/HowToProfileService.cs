@@ -36,6 +36,7 @@ namespace HowTo.IdentityApi
             {
                 new Claim("customclaim", "something"),
                 new Claim(JwtClaimTypes.Role, "user"),
+                new Claim(JwtClaimTypes.Role, "admin"),
                 //new Claim(JwtClaimTypes.Email, user.EmailAddress)
             };
         }
