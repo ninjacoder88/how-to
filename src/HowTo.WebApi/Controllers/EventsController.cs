@@ -1,4 +1,5 @@
-﻿using HowTo.DataAccess;
+﻿using AutoFixture;
+using HowTo.DataAccess;
 using HowTo.DataAccess.Models;
 using HowTo.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -63,6 +64,27 @@ namespace HowTo.WebApi.Controllers
 
             var eventId = await _repository.CreateEventAsync(model.Title, model.Description, startDateTimeOffset, endDateTimeOffset);
             return new JsonResult(new ResponseModel<string>(true) { Data = eventId });
+        }
+
+        [HttpGet("init")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Initialize([FromQuery] int eventCount)
+        {
+            if (eventCount < 1)
+                return BadRequest("eventCount must be greater than 0");
+
+            Fixture f = new Fixture();
+
+            var now = new DateTimeOffset(DateTime.Now);
+            Random random = new Random();
+            for(int i = 0; i < eventCount; i++)
+            {
+                var start = now.AddDays(random.Next(0, 100));
+                var end = start.AddHours(random.Next(1, 8));
+
+                await _repository.CreateEventAsync(f.Create<string>(), f.Create<string>(), start, end);
+            }
+            return new JsonResult(true);
         }
 
         private static DateTimeOffset GetFromDateAndTime(string? date, string? time, DateTime today)
