@@ -75,7 +75,6 @@
             self.loadEvents = function () {
                 http.getAsync(`${apiUrl}api/events`)
                     .then(events => {
-                        console.log(events);
                         const array = [];
                         events.forEach(e => {
                             array.push(new HowToEvent(e));
