@@ -18,7 +18,12 @@
         </thead>
         <tbody data-bind="foreach: weeks">
             <tr data-bind="foreach: days">
-                <td style="height: 75px" data-bind="singleClick: showDay, event: { dblclick: addEvent }"><span class="" data-bind="text: dayOfMonth"></span></td>
+                <td style="height: 75px" data-bind="singleClick: showDay, event: { dblclick: addEvent }">
+                    <span class="" data-bind="text: dayOfMonth"></span><br/>
+                    <div data-bind="foreach: events">
+                        <span data-bind="text: title"></span>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>

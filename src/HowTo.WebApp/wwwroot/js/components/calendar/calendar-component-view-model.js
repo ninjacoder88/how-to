@@ -1,5 +1,5 @@
-﻿define(["knockout", "bootstrap", "jquery"],
-    function (ko) {
+﻿define(["knockout", "pubsub", "bootstrap", "jquery"],
+    function (ko, ps) {
         "use strict";
 
         ko.bindingHandlers.singleClick = {
@@ -27,13 +27,14 @@
             self.dayOfMonth = obj.dayOfMonth;
             self.month = obj.month + 1;
             self.year = obj.year;
-            self.displayDate = `${self.year.toString().padStart(2, "0")}-${self.month.toString().padStart(2, "0")}-${self.dayOfMonth.toString().padStart(2, "0")}`;
+            self.displayDate = `${self.year}-${self.month.toString().padStart(2, "0")}-${self.dayOfMonth.toString().padStart(2, "0")}`;
+            self.events = ko.observableArray([]);
 
             self.showDay = function () {
                 if (self.dayOfMonth === "") {
                     return;
                 }
-                window.alert(self.displayDate);
+                window.alert(`${self.displayDate} - ${self.events().length}`);
             };
 
             self.addEvent = function () {
@@ -62,6 +63,14 @@
             self.weeks = ko.observableArray([]);
             self.monthYear = ko.computed(function () {
                 return `${monthNames[self.calendarMonth()]} ${self.calendarYear()}`;
+            });
+            let days = [];
+            self.events = ko.observableArray([]);
+
+            ps.subscribe("events-loaded", (message) => {
+                self.events(message.events);
+                console.log(message.events);
+                updateWeeks();
             });
 
             function getDaysInMonth(month, year) {
@@ -116,24 +125,35 @@
                 const weeksInMonth = getWeeksInMonth(daysInMonth, firstDayOfMonth);
 
                 self.weeks([]);
+                days = [];
                 let day = 1;
                 for (var w = 0; w < weeksInMonth; w++) {
                     const calendarWeek = new CalendarWeek({weekNumber: w+1});
-                    //const days = [];
                     for (var d = 0; d < 7; d++) {
                         if (w === 0 && d < firstDayOfMonth) {
                             calendarWeek.days.push(new CalendarDay({ dayOfMonth: "", month: self.calendarMonth(), year: self.calendarYear() }));
                         } else {
                             if (day > daysInMonth) {
-                                calendarWeek.days.push(new CalendarDay({ dayOfMonth: "", month: self.calendarMonth(), year: self.calendarYear() }));
+                                const d = new CalendarDay({ dayOfMonth: "", month: self.calendarMonth(), year: self.calendarYear() });
+                                days.push(d);
+                                calendarWeek.days.push(d);
                             } else {
-                                calendarWeek.days.push(new CalendarDay({ dayOfMonth: day++, month: self.calendarMonth(), year: self.calendarYear() }));
+                                const d = new CalendarDay({ dayOfMonth: day++, month: self.calendarMonth(), year: self.calendarYear() });
+                                days.push(d);
+                                calendarWeek.days.push(d);
                             }
                         }
                     }
-                    //self.weeks.push({ days: days });
                     self.weeks.push(calendarWeek);
                 }
+
+                self.events().forEach(e => {
+                    days.forEach(d => {
+                        if (e.startDate === d.displayDate) {
+                            d.events.push(e);
+                        }
+                    });
+                });
             }
 
             self.initialize = function () {
