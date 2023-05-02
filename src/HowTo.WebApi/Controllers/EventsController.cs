@@ -12,6 +12,7 @@ namespace HowTo.WebApi.Controllers
     [ApiController]
     [Authorize(Roles = "admin")]
     [RequiredScope("WebAppScope")]
+    [ApiVersion("1.0")]
     public class EventsController : ControllerBase
     {
         public EventsController(IRepository repository)

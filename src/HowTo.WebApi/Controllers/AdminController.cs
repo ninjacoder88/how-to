@@ -8,6 +8,7 @@ namespace HowTo.WebApi.Controllers
     [ApiController]
     [Authorize(Roles = "admin")]
     [RequiredScope("WebAppScope")]
+    [ApiVersion("1.0")]
     public class AdminController : ControllerBase
     {
         public AdminController(IWebHostEnvironment environment, IConfiguration configuration)

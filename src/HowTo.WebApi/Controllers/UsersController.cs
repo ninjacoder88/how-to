@@ -11,6 +11,7 @@ namespace HowTo.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class UsersController : ControllerBase
     {
         public UsersController(IRepository repository, IConfiguration configuration)
