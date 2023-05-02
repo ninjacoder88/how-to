@@ -30,7 +30,7 @@ var publicIdentity = builder.Configuration.GetValue<string>("ServiceConnections:
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("1.0", new OpenApiInfo { Title = "How To Web Api", Version = "1.0" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "How To Web Api", Version = "v1" });
     options.OperationFilter<ApiVersionOperationFilter>();
     options.CreateCustomSecurityDefintion(publicIdentity);
     options.CreateCustomSecurityRequirement();
@@ -62,7 +62,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseCors("DoNotDoThisInProduction");
     app.UseSwagger();
-    app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/1.0/swagger.json", $"How To Web Api - {app.Environment.EnvironmentName}"); });
+    app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/v1/swagger.json", $"How To Web Api - {app.Environment.EnvironmentName}"); });
 }
 
 app.UseStaticFiles()
