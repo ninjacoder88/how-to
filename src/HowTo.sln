@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HowTo.Logging", "HowTo.Logg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HowTo.Client", "HowTo.Client\HowTo.Client.csproj", "{7C5989E1-88CB-4979-AA7A-420B2A063217}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HowTo.BlazorWebAssembly", "HowTo.BlazorWebAssembly\HowTo.BlazorWebAssembly.csproj", "{EADA2B9B-5CEB-49D4-88A8-4C5BB14FEB53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HowTo.BlazorServer", "HowTo.BlazorServer\HowTo.BlazorServer.csproj", "{4693C4BA-1E78-491B-A255-761496921456}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{7C5989E1-88CB-4979-AA7A-420B2A063217}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C5989E1-88CB-4979-AA7A-420B2A063217}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C5989E1-88CB-4979-AA7A-420B2A063217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EADA2B9B-5CEB-49D4-88A8-4C5BB14FEB53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EADA2B9B-5CEB-49D4-88A8-4C5BB14FEB53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EADA2B9B-5CEB-49D4-88A8-4C5BB14FEB53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EADA2B9B-5CEB-49D4-88A8-4C5BB14FEB53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4693C4BA-1E78-491B-A255-761496921456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4693C4BA-1E78-491B-A255-761496921456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4693C4BA-1E78-491B-A255-761496921456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4693C4BA-1E78-491B-A255-761496921456}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
