@@ -13,7 +13,7 @@ var identityServerBuilder =
     builder.Services.AddIdentityServer(options =>
     {
         options.EmitScopesAsSpaceDelimitedStringInJwt = true;
-        options.IssuerUri = "http://localhost:8082";
+        options.IssuerUri = builder.Configuration.GetValue<string>("Issuer");//this is necessary for swagger to work appropriately
     }).AddInMemoryIdentityResources(IdentityResourceConfiguration.IdentityResources)
     .AddInMemoryApiScopes(ApiScopeConfiguration.ApiScopes)
     .AddInMemoryClients(ClientConfiguration.Clients)

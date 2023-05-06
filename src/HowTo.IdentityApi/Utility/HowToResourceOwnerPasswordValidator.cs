@@ -9,9 +9,10 @@ namespace HowTo.IdentityApi
 {
     internal sealed class HowToResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
     {
-        public HowToResourceOwnerPasswordValidator(IRepository repository)
+        public HowToResourceOwnerPasswordValidator(IRepository repository, IConfiguration configuration)
         {
             _repository = repository;
+            _configuration = configuration;
         }
 
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
@@ -40,12 +41,13 @@ namespace HowTo.IdentityApi
                 new Claim(JwtClaimTypes.Id, model.UserId),
                 new Claim(JwtClaimTypes.Subject, model.Username),
                 new Claim(JwtClaimTypes.AuthenticationTime, now.ToEpochTime().ToString()),
-                new Claim(JwtClaimTypes.IdentityProvider, "http://localhost:8092"),
+                new Claim(JwtClaimTypes.IdentityProvider, _configuration.GetValue<string>("Issuer")),
             };
 
             context.Result = new GrantValidationResult { Subject = new ClaimsPrincipal(new ClaimsIdentity(claims)) };
         }
 
         private readonly IRepository _repository;
+        private readonly IConfiguration _configuration;
     }
 }
