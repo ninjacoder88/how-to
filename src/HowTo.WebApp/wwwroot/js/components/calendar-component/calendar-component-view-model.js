@@ -22,6 +22,16 @@
             }
         };
 
+        function CalendarEvent(obj) {
+            const self = this;
+            self.eventId = obj.eventId;
+            self.title = obj.title;
+
+            self.showEvent = function () {
+                ps.publish("event-clicked", { calendarEvent: obj });
+            };
+        }
+
         function CalendarDay(obj) {
             const self = this;
             self.dayOfMonth = obj.dayOfMonth;
@@ -29,20 +39,6 @@
             self.year = obj.year;
             self.displayDate = `${self.year}-${self.month.toString().padStart(2, "0")}-${self.dayOfMonth.toString().padStart(2, "0")}`;
             self.events = ko.observableArray([]);
-
-            self.showDay = function () {
-                if (self.dayOfMonth === "") {
-                    return;
-                }
-                window.alert(`${self.displayDate} - ${self.events().length}`);
-            };
-
-            self.addEvent = function () {
-                if (self.dayOfMonth === "") {
-                    return;
-                }
-                window.confirm("Are you sure you want to add?");
-            };
         }
 
         function CalendarWeek(obj) {
@@ -51,11 +47,10 @@
             self.days = [];
         }
 
-        return function (params) {
+        return function () {
             const self = this;
             const now = new Date();
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            const injected = params;
 
             self.calendarVisible = ko.observable(true);
             self.calendarMonth = ko.observable(now.getMonth());
@@ -68,8 +63,8 @@
             self.events = ko.observableArray([]);
 
             ps.subscribe("events-loaded", (message) => {
+                console.log(message);
                 self.events(message.events);
-                console.log(message.events);
                 updateWeeks();
             });
 
@@ -150,7 +145,7 @@
                 self.events().forEach(e => {
                     days.forEach(d => {
                         if (e.startDate === d.displayDate) {
-                            d.events.push(e);
+                            d.events.push(new CalendarEvent(e));
                         }
                     });
                 });
