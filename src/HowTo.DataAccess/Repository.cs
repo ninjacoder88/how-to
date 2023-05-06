@@ -25,6 +25,8 @@ namespace HowTo.DataAccess
         Task<string> CreateEventAsync(string title, string description, DateTimeOffset start, DateTimeOffset end);
 
         Task<List<EventModel>> LoadEventsAsync(DateTimeOffset start, DateTimeOffset end);
+
+        Task<EventModel?> LoadEventAsync(string eventId);
     }
 
     public sealed class Repository : IRepository
@@ -127,6 +129,15 @@ namespace HowTo.DataAccess
             var cursor = await GetEventCollection().FindAsync(f => f.StartDateTime >= start || f.EndDateTime <= end);
             var list = await cursor.ToListAsync();
             return list.Select(x => x.ToModel()).ToList();
+        }
+
+        public async Task<EventModel?> LoadEventAsync(string eventId)
+        {
+            if (!ObjectId.TryParse(eventId, out var objectId))
+                return null;
+            
+            var entity = await GetEventCollection().FindOneAsync(f => f._id == objectId);
+            return entity?.ToModel();
         }
 
         private IMongoDatabase GetDatabase() => _mongoClient.GetDatabase("HowTo");
