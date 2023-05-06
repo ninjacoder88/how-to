@@ -4,7 +4,9 @@ using HowTo.DataAccess.Models;
 using HowTo.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Identity.Web.Resource;
+using Newtonsoft.Json;
 
 namespace HowTo.WebApi.Controllers
 {
@@ -15,13 +17,30 @@ namespace HowTo.WebApi.Controllers
     [ApiVersion("1.0")]
     public class EventsController : ControllerBase
     {
-        public EventsController(IRepository repository)
+        public EventsController(IRepository repository, IDistributedCache cache)
         {
             _repository = repository;
+            _cache = cache;
+        }
+
+        [HttpGet("{eventId}")]
+        public async Task<IActionResult> GetEvent(string eventId)
+        {
+            var cacheValue = await _cache.GetStringAsync(eventId);
+
+            if (!string.IsNullOrEmpty(cacheValue))
+                return new JsonResult(new ResponseModel<EventModel>(true) { Data = JsonConvert.DeserializeObject<EventModel>(cacheValue) });
+
+            EventModel? eventModel = await _repository.LoadEventAsync(eventId);
+
+            if(eventModel != null)
+                await _cache.SetStringAsync(eventId, JsonConvert.SerializeObject(eventModel));
+
+            return new JsonResult(new ResponseModel<EventModel>(true) { Data = eventModel });
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] string? startDate, [FromQuery] string? startTime, [FromQuery] string? endDate, [FromQuery] string? endTime)
+        public async Task<IActionResult> GetEvents([FromQuery] string? startDate, [FromQuery] string? startTime, [FromQuery] string? endDate, [FromQuery] string? endTime)
         {
             var today = DateTime.Today;
             var tomorrow = today.AddDays(1);
@@ -32,12 +51,11 @@ namespace HowTo.WebApi.Controllers
             if (startDateTimeOffset >= endDateTimeOffset)
                 return BadRequest("Start must be before end");
 
-            var events = await _repository.LoadEventsAsync(startDateTimeOffset, endDateTimeOffset);
-            return new JsonResult(new ResponseModel<List<EventModel>>(true) { Data = events });
+            return new JsonResult(new ResponseModel<List<EventModel>>(true) { Data = await _repository.LoadEventsAsync(startDateTimeOffset, endDateTimeOffset) });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateEventModel model)
+        public async Task<IActionResult> CreateEvent([FromBody] CreateEventModel model)
         {
             if (model == null)
                 return BadRequest("No data received");
@@ -80,7 +98,7 @@ namespace HowTo.WebApi.Controllers
             Random random = new Random();
             for(int i = 0; i < eventCount; i++)
             {
-                var start = now.AddDays(random.Next(0, 100));
+                var start = now.AddDays(random.Next(0, 100)).AddHours(random.Next(1, 8)).AddMinutes(random.Next(1, 45));
                 var end = start.AddHours(random.Next(1, 8));
 
                 await _repository.CreateEventAsync(f.Create<string>(), f.Create<string>(), start, end);
@@ -108,5 +126,6 @@ namespace HowTo.WebApi.Controllers
         }
 
         private readonly IRepository _repository;
+        private readonly IDistributedCache _cache;
     }
 }
