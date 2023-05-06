@@ -40,7 +40,7 @@ namespace HowTo.IdentityApi
                 new Claim(JwtClaimTypes.Id, model.UserId),
                 new Claim(JwtClaimTypes.Subject, model.Username),
                 new Claim(JwtClaimTypes.AuthenticationTime, now.ToEpochTime().ToString()),
-                new Claim(JwtClaimTypes.IdentityProvider, "howto"),
+                new Claim(JwtClaimTypes.IdentityProvider, "http://localhost:8092"),
             };
 
             context.Result = new GrantValidationResult { Subject = new ClaimsPrincipal(new ClaimsIdentity(claims)) };
