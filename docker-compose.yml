@@ -30,7 +30,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongo-admin
       MONGO_INITDB_ROOT_PASSWORD: mongo-password
-  mongo-exporess:
+  mongo-express:
     image: mongo-express
     restart: always
     ports:
