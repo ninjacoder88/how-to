@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HowTo.DataAccess", "HowTo.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HowTo.Utility", "HowTo.Utility\HowTo.Utility.csproj", "{BD661E07-16D5-4F64-8DBA-52E34A99CC68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HowTo.Logging", "HowTo.Logging\HowTo.Logging.csproj", "{6399E8BF-E85E-4269-A229-069BB38C33F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HowTo.Logging", "HowTo.Logging\HowTo.Logging.csproj", "{6399E8BF-E85E-4269-A229-069BB38C33F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HowTo.Client", "HowTo.Client\HowTo.Client.csproj", "{7C5989E1-88CB-4979-AA7A-420B2A063217}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{6399E8BF-E85E-4269-A229-069BB38C33F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6399E8BF-E85E-4269-A229-069BB38C33F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6399E8BF-E85E-4269-A229-069BB38C33F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C5989E1-88CB-4979-AA7A-420B2A063217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5989E1-88CB-4979-AA7A-420B2A063217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5989E1-88CB-4979-AA7A-420B2A063217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C5989E1-88CB-4979-AA7A-420B2A063217}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
