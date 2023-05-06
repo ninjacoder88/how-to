@@ -4,6 +4,7 @@
 
         function HowToEvent(obj) {
             const self = this;
+            self.eventId = obj.eventId;
             self.title = obj.title;
             self.description = obj.description;
             self.startDate = obj.startDate;
@@ -15,6 +16,11 @@
         function ViewModel() {
             const self = this;
             const apiUrl = document.getElementById("api-url").value;
+            self.currentEvent = ko.observable();
+
+            ps.subscribe("event-clicked", (message) => {
+                self.currentEvent(message.calendarEvent);
+            });
 
             self.loadEvents = function () {
                 http.getAsync(`${apiUrl}api/events`)
@@ -33,8 +39,8 @@
         }
 
         ko.components.register("calendar-component", {
-            viewModel: { require: "components/calendar/calendar-component-view-model" },
-            template: { require: "text!components/calendar/calendar-component.html" },
+            viewModel: { require: "components/calendar-component/calendar-component-view-model" },
+            template: { require: "text!components/calendar-component/calendar-component.html" },
         });
 
         ko.applyBindings(new ViewModel(), document.getElementById("app-container"));
