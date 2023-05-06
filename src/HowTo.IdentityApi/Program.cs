@@ -13,6 +13,7 @@ var identityServerBuilder =
     builder.Services.AddIdentityServer(options =>
     {
         options.EmitScopesAsSpaceDelimitedStringInJwt = true;
+        options.IssuerUri = "http://localhost:8082";
     }).AddInMemoryIdentityResources(IdentityResourceConfiguration.IdentityResources)
     .AddInMemoryApiScopes(ApiScopeConfiguration.ApiScopes)
     .AddInMemoryClients(ClientConfiguration.Clients)
